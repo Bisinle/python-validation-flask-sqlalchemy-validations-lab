@@ -43,22 +43,21 @@ class Post(db.Model):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
 
-    @validates('title','content','category')
-    def post_validation(self, key, address):
-    
-            
-        if key == 'content':
-             if len(address) < 250:
-                raise ValueError('Content too short test. Less than 250 chars.')
-                
-      
-             
-        elif key == 'category':
-            if address not in ['Fiction' , 'Non-Fiction']:
-                raise ValueError('category has to be Fiction or Non-Fiction')
-                
-        return address
-    
+    @validates('title')
+    def clickbait_title(self, key, title):
+       bait_titles =  ["Won't Believe", "Secret", "Top", "Guess"]
+       for bait_title in bait_titles:
+           if bait_title not in title:
+               raise ValueError('sldfklsdjkf')
+
+
+
+
+    @validates('content')
+    def validate_content(self, key, value):
+        if len(value) < 250:
+            raise ValueError('Post content must be at least 250 characters long')
+        return value
 
     @validates('summary')
     def validate_summary(self, key, value):
@@ -66,6 +65,12 @@ class Post(db.Model):
             raise ValueError('Post summary cannot exceed 250 characters')
         return value
 
+    @validates('category')
+    def validate_category(self, key, value):
+        if value not in ['Fiction', 'Non-Fiction']:
+            raise ValueError('Post category must be Fiction or Non-Fiction')
+        return value
 
+    
     def __repr__(self):
         return f'Post(id={self.id}, title={self.title} content={self.content}, summary={self.summary})'
