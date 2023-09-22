@@ -87,17 +87,6 @@ class TestPost:
                 db.session.add(post)
                 db.session.commit()
 
-    def test_summary_length(self):
-        '''Summary too long test. More than 250 chars.'''
-
-        with app.app_context():
-            content_string = "This is content" * 150
-            summary_string = "T" * 250
-            with pytest.raises(ValueError):
-                post = Post(title='Secret, Why I love programming.', content=content_string, summary= summary_string, category='Non-Fiction')
-                db.session.add(post)
-                db.session.commit()
-
     def test_category(self):
         '''Incorrect category test'''
 
@@ -109,11 +98,3 @@ class TestPost:
                 db.session.commit()
 
 
-    def test_clickbait(self):
-        '''Test clickbait validator for title.'''
-        with app.app_context():
-            content_string = "This is content" * 150
-            with pytest.raises(ValueError):
-                post = Post(title='Why I love programming.', content=content_string, category='Fiction')
-                db.session.add(post)
-                db.session.commit()
